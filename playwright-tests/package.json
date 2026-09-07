@@ -1,0 +1,30 @@
+{
+  "name": "bizpos-playwright-e2e",
+  "version": "1.0.0",
+  "description": "Enterprise Playwright E2E & Financial Ledger Automation Suite for BizPOS / YesSME ERP",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright show-report",
+    "test:parity": "playwright test tests/financial_parity.spec.ts",
+    "test:defects": "playwright test tests/bug96_journal_sync.spec.ts tests/bug76_rollback_safety.spec.ts"
+  },
+  "keywords": [
+    "playwright",
+    "automation",
+    "erp",
+    "financial-audit",
+    "bizpos",
+    "qa"
+  ],
+  "author": "Senior QA & Financial Systems Auditor",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.42.1",
+    "@types/node": "^20.11.24",
+    "typescript": "^5.3.3"
+  }
+}
