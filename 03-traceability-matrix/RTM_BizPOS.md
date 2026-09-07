@@ -37,6 +37,11 @@ The Requirements Traceability Matrix (RTM) establishes forward and backward trac
 | **REQ-BANK-01** | Treasury & Banking | Automated bank charges and maintenance fees debited by bank must be logged under Financial/Bank Charges and reduce Bank balance. | `TC-21` | UCB Bank Statement Recon | **VERIFIED** | — |
 | **REQ-TRANS-01** | Inter-Account | Internal fund transfers between Bank and Cash must operate as contra entries with zero impact on net system liquidity. | `TC-08` | Contra Voucher & Cash Flow | **VERIFIED** | — |
 | **REQ-LEDGER-01**| Financial Parity | System must maintain zero variance across Cash Flow In/Out, General Ledger, and Sum of Active Payment Accounts. | `TC-01` $\dots$ `TC-23` | Mathematical Parity Proof | **CONDITIONAL** | **BUG-96** |
+| **REQ-REP-01** | Profit & Loss | Profit & Loss Statement must incorporate all verified operating expenses (matching Cash Flow and Expense Ledger) to compute accurate Net Profit. | `TC-17`, `TC-18` | Cross-Statement Recon | **DEFECTIVE** | **BUG-114** |
+| **REQ-REP-02** | Sales Reporting | Sales summary reporting must explicitly break down Gross Sales, Customer Returns, Net Sales, Collections, and Outstanding Dues. | `TC-04`, `TC-05` | Invoicing Sub-ledger | **DEFECTIVE** | **BUG-118** |
+| **REQ-REP-03** | Supplier Payments | Supplier payments audit statement must enforce cumulative bounds ($\text{Period Paid} \le \text{All-Time Paid}$) and reconcile with purchases. | `TC-09`, `TC-10` | AP Ledger Recon | **DEFECTIVE** | **BUG-109** |
+| **REQ-REP-04** | Cash Movement | Cash Movement report must aggregate all cash inflow streams (Capital, Loans, Returns) and render human-readable type labels. | `TC-01`, `TC-03`, `TC-06` | Treasury Statement Recon | **DEFECTIVE** | **BUG-111** |
+| **REQ-REP-05** | Receivables Aging | Receivables aging analysis must accurately track overdue customer invoices with formatted integer day buckets. | `TC-04` | Aging Bucket Verification | **DEFECTIVE** | **BUG-121** |
 
 ---
 
@@ -46,18 +51,26 @@ The Requirements Traceability Matrix (RTM) establishes forward and backward trac
 +-----------------------------------------------------------------------+
 | Metric Description                                      | Value       |
 +-----------------------------------------------------------------------+
-| Total Core Functional Requirements Mapped               | 21          |
+| Total Core Functional Requirements Mapped               | 26          |
 | Total Operational Test Cases Executed                   | 23          |
-| Functional Requirements Fully Verified (PASS)           | 19 (90.48%) |
-| Functional Requirements Blocked/Defective (BUG-96)      | 2 (9.52%)   |
+| Functional Requirements Fully Verified (PASS)           | 19 (73.08%) |
+| Functional Requirements Defective / Action Required     | 7 (26.92%)  |
 | Closed-Loop Liquidity Parity Coverage                   | 100%        |
-| Test Case Pass Rate (TC-01 through TC-23)               | 95.65%      |
 +-----------------------------------------------------------------------+
 ```
 
 ---
 
 ## 4. Defect Impact Analysis on System Requirements
+
+* **BUG-70 (Severe Cash Flow Discrepancy):** Violates `REQ-LEDGER-01` when transaction hooks fail to update running balances atomically.
+* **BUG-76 (Purchase Return Rollback Failure):** Breaches atomicity constraints in inventory and cash ledger transitions.
+* **BUG-96 (Payments Journal Missing Vouchers):** Violates `REQ-EXP-02` by leaving sub-ledger cash disbursements unregistered in master payments.
+* **BUG-109 (Supplier Payments Paradox):** Violates `REQ-REP-03` by presenting impossible period vs all-time mathematical aggregates.
+* **BUG-111 (Cash Movement False Deficit):** Violates `REQ-REP-04` by reporting a ৳ 18,600 deficit when accounts hold ৳ 54,100 surplus.
+* **BUG-114 (P&L Zero Expenses):** Violates `REQ-REP-01` by omitting ৳ 6,300 in verified operational expenses, falsifying net income.
+* **BUG-118 (Sales Report Return Deduction Paradox):** Violates `REQ-REP-02` through column mislabeling and silent return subtractions.
+
 
 ### Impact of BUG-96 on REQ-EXP-02 & REQ-LEDGER-01
 * **Requirement Breach:** `REQ-EXP-02` dictates that every petty cash operational expense must create an auditable voucher in `Finance -> Payments Journal`.

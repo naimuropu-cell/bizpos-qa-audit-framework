@@ -2,8 +2,8 @@
  * Test Data Constants & Financial Fixtures for BizPOS ERP
  */
 export const TEST_CREDENTIALS = {
-  adminUser: process.env.ERP_ADMIN_USER || 'auditor.qa@bizpos.local',
-  adminPassword: process.env.ERP_ADMIN_PASSWORD || 'AuditParity@2026',
+  adminUser: process.env.ERP_ADMIN_USER || 'admin@gmail.com',
+  adminPassword: process.env.ERP_ADMIN_PASSWORD || '1234',
 };
 
 export const AUDITED_FINANCIAL_BASELINE = {

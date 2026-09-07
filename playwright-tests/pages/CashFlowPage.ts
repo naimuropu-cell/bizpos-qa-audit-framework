@@ -16,7 +16,7 @@ export class CashFlowPage extends BasePage {
   }
 
   async goto(): Promise<void> {
-    await this.page.goto('/admin/cash-flow');
+    await this.page.goto('/admin/money/cashflow');
     await this.waitForPageReady();
   }
 
