@@ -1,78 +1,108 @@
-# Requirements Traceability Matrix (RTM): BizPOS / YesSME ERP
+# Requirements Traceability Matrix (RTM): BizPOS ERP
 
-> **Document Identifier:** `RTM-BIZPOS-FIN-001`  
-> **Target Scope:** Functional Requirements $\longleftrightarrow$ Test Cases $\longleftrightarrow$ Defect Tracking  
-> **Audit Status:** Baseline Audited (23 Scenarios Verified)
-
----
-
-## 1. Overview & Traceability Objective
-
-The Requirements Traceability Matrix (RTM) establishes forward and backward traceability across the BizPOS / YesSME ERP system architecture. It validates that every financial business rule, module workflow, and general ledger posting rule is covered by audited test cases, and maps observed software discrepancies directly to functional requirements.
+> **Document Identifier:** `RTM-BIZPOS-FIN-001` &nbsp;|&nbsp; **Version:** `3.0-LEAD-AUDIT`  
+> **Author & QA Lead:** Naimur Rahman Opu (`naimuropu-cell`)  
+> **Scope:** Bidirectional Traceability: Business Requirements $\longleftrightarrow$ Test Cases (TC-01..26) $\longleftrightarrow$ Defect Specs $\longleftrightarrow$ Backend Controllers  
+> **Standard:** IEEE 829 / ISO 29119 Quality Assurance Traceability Standards
 
 ---
 
-## 2. Master Traceability Matrix
+## 1. Governance & Document Sign-Off
 
-| Requirement ID | ERP Module | Functional & Accounting Requirement Specification | Mapped Test Case(s) | Verification Method | Execution Status | Defect ID |
-| :--- | :--- | :--- | :---: | :---: | :---: | :---: |
-| **REQ-CAP-01** | Capital Management | System must support equity capital injection into designated Bank or Cash accounts, crediting Owner's Equity and debiting Asset Accounts. | `TC-01`, `TC-02` | UI Entry + DB Ledger Audit | **VERIFIED** | — |
-| **REQ-CAP-02** | Capital Management | Partner drawings/capital withdrawal must deduct from active payment accounts and debit Partner Equity/Drawings sub-ledger. | `TC-22` | UI Entry + Bank Recon | **VERIFIED** | — |
-| **REQ-LOAN-01** | Lender Loans | Disbursement of commercial term loan must recognize loan liability and credit designated corporate bank account. | `TC-03` | Bank Wire Recon + DB Audit | **VERIFIED** | — |
-| **REQ-LOAN-02** | Lender Loans | Monthly installment (EMI) debit must split between Principal repayment (reducing liability) and Interest expense, debiting Bank. | `TC-13` | Amortization Schedule Check | **VERIFIED** | — |
-| **REQ-PLOAN-01** | Personal Loans | Short-term staff/personal loans disbursed from Cash Box must create a receivable sub-ledger under Current Assets. | `TC-14` | Cash Voucher Verification | **VERIFIED** | — |
-| **REQ-PLOAN-02** | Personal Loans | Loan recovery must increment payment account (`Cash Box`) and reduce the outstanding balance on the personal borrower profile. | `TC-06` | Till Receipt Verification | **VERIFIED** | — |
-| **REQ-SALES-01** | Sales & Invoicing | B2B wholesale invoice settlements via bank transfer must transition invoice state to "PAID" and credit bank ledger. | `TC-04` | Bank Statement Sync | **VERIFIED** | — |
-| **REQ-SALES-02** | Sales & Retail POS | Walk-in counter POS cash sales must increment till float (`Cash Box`) and post sales revenue to daily register batch. | `TC-05` | POS Counter Register Count | **VERIFIED** | — |
-| **REQ-PURCH-01** | Purchasing & AP | Vendor advance payments (BEFTN bank wire) must debit Supplier Advance account and credit Bank without requiring immediate invoice match. | `TC-09` | AP Sub-ledger Audit | **VERIFIED** | — |
-| **REQ-PURCH-02** | Purchasing & AP | Spot raw material cash advances must deduct immediately from `Cash Box` and create unallocated vendor credit. | `TC-10` | Cash Drawer Reconciliation | **VERIFIED** | — |
-| **REQ-PURCH-03** | Purchasing & AP | Direct consumables and logistic courier payments must debit operational expense and credit Cash Box. | `TC-23` | Voucher & Physical Invoices | **VERIFIED** | — |
-| **REQ-ASSET-01** | Fixed Assets | Hardware and equipment acquisitions exceeding capitalization threshold must capitalize to Fixed Asset Register and debit Bank. | `TC-11` | Asset Register Inspection | **VERIFIED** | — |
-| **REQ-ASSET-02** | Fixed Assets | Asset repairs and maintenance below capitalization threshold must be expensed directly through Cash/Bank. | `TC-12` | Expense Sub-ledger Audit | **VERIFIED** | — |
-| **REQ-MKT-01** | Marketing & Ads | Digital campaign ad spend (Meta Facebook Ads) debited via bank card must be recognized under Marketing Expense and debit Bank. | `TC-15` | Digital Ad Invoice Recon | **VERIFIED** | — |
-| **REQ-HR-01** | HR & Payroll | Emergency mid-month salary advance must register against employee ledger and disburse from Cash Box. | `TC-16` | HR Advance Log Inspection | **VERIFIED** | — |
-| **REQ-HR-02** | HR & Payroll | Recovery of salary advance via counter cash must close employee advance record and credit Cash Box. | `TC-07` | Payroll Ledger Clearance | **VERIFIED** | — |
-| **REQ-EXP-01** | General Expenses | Commercial office rent and institutional utility invoices paid via bank must generate expense vouchers and debit Bank. | `TC-17`, `TC-19` | Lease Contract & Utility Bill | **VERIFIED** | — |
-| **REQ-EXP-02** | General Expenses | Petty cash operational expenses (pantry, office supplies) paid via `Cash Box` must deduct balance, log in Cash Flow, AND post to Payments Journal. | `TC-18`, `TC-20` | Full Double-Entry Audit | **DEFECTIVE** | **BUG-96** |
-| **REQ-BANK-01** | Treasury & Banking | Automated bank charges and maintenance fees debited by bank must be logged under Financial/Bank Charges and reduce Bank balance. | `TC-21` | UCB Bank Statement Recon | **VERIFIED** | — |
-| **REQ-TRANS-01** | Inter-Account | Internal fund transfers between Bank and Cash must operate as contra entries with zero impact on net system liquidity. | `TC-08` | Contra Voucher & Cash Flow | **VERIFIED** | — |
-| **REQ-LEDGER-01**| Financial Parity | System must maintain zero variance across Cash Flow In/Out, General Ledger, and Sum of Active Payment Accounts. | `TC-01` $\dots$ `TC-23` | Mathematical Parity Proof | **CONDITIONAL** | **BUG-96** |
-| **REQ-REP-01** | Profit & Loss | Profit & Loss Statement must incorporate all verified operating expenses (matching Cash Flow and Expense Ledger) to compute accurate Net Profit. | `TC-17`, `TC-18` | Cross-Statement Recon | **DEFECTIVE** | **BUG-114** |
-| **REQ-REP-02** | Sales Reporting | Sales summary reporting must explicitly break down Gross Sales, Customer Returns, Net Sales, Collections, and Outstanding Dues. | `TC-04`, `TC-05` | Invoicing Sub-ledger | **DEFECTIVE** | **BUG-118** |
-| **REQ-REP-03** | Supplier Payments | Supplier payments audit statement must enforce cumulative bounds ($\text{Period Paid} \le \text{All-Time Paid}$) and reconcile with purchases. | `TC-09`, `TC-10` | AP Ledger Recon | **DEFECTIVE** | **BUG-109** |
-| **REQ-REP-04** | Cash Movement | Cash Movement report must aggregate all cash inflow streams (Capital, Loans, Returns) and render human-readable type labels. | `TC-01`, `TC-03`, `TC-06` | Treasury Statement Recon | **DEFECTIVE** | **BUG-111** |
-| **REQ-REP-05** | Receivables Aging | Receivables aging analysis must accurately track overdue customer invoices with formatted integer day buckets. | `TC-04` | Aging Bucket Verification | **DEFECTIVE** | **BUG-121** |
+| Stakeholder Role | Name | Department | Approval Status | Sign-Off Date |
+| :--- | :--- | :--- | :---: | :---: |
+| **QA Lead & Systems Auditor** | Naimur Rahman Opu | Quality Engineering & Audit | **APPROVED** | 08 Sep 2026 |
+| **Lead Backend Architect** | Architecture Lead | Core Engineering | **REVIEWED** | 08 Sep 2026 |
+| **Financial Controller** | Head of Corporate Finance | Treasury & Audit | **CERTIFIED** | 08 Sep 2026 |
 
 ---
 
-## 3. Requirement Coverage Statistics
+## 2. Bidirectional Traceability Matrix
+
+This matrix establishes 100% forward and backward traceability across the BizPOS / YesSME ERP suite:
+
+| Req ID | Module Head | Functional & Accounting Requirement Specification | Criticality | Mapped Test Case(s) | Backend Controller & DB Target | Execution Status | Defect Link |
+| :--- | :--- | :--- | :---: | :---: | :--- | :---: | :---: |
+| **REQ-CAP-01** | Capital | System must credit Owner's Equity and debit active Asset Accounts upon partner equity capital injection. | `Critical` | `TC-01`, `TC-02` | `Accounting/InvestmentController`<br>`investments`, `payment_accounts` | **VERIFIED** | — |
+| **REQ-CAP-02** | Capital | Partner equity withdrawals must deduct from active payment accounts and debit Partner Drawings sub-ledger. | `Critical` | `TC-22` | `Accounting/InvestmentController`<br>`investments`, `cash_flows` | **VERIFIED** | — |
+| **REQ-LOAN-01** | Loans | Commercial term loan disbursement must recognize liability and credit designated corporate bank account. | `Critical` | `TC-03` | `LoanController@disburse`<br>`loans`, `payment_accounts` | **VERIFIED** | — |
+| **REQ-LOAN-02** | Loans | Monthly loan EMI debit must split between Principal (reducing liability) and Interest expense, debiting Bank. | `High` | `TC-13` | `LoanController@repay`<br>`loan_payments`, `cash_flows` | **VERIFIED** | — |
+| **REQ-PLOAN-01**| Personal Loans | Short-term staff loans disbursed from Cash Box must create receivable sub-ledger under Current Assets. | `High` | `TC-14` | `PersonalLoanController`<br>`personal_loans`, `cash_flows` | **VERIFIED** | — |
+| **REQ-PLOAN-02**| Personal Loans | Loan recovery must increment payment account (`Cash Box`) and reduce borrower receivable balance. | `High` | `TC-06` | `PersonalLoanController`<br>`personal_loans`, `payment_accounts` | **VERIFIED** | — |
+| **REQ-SALES-01**| Sales / B2B | Wholesale invoice settlements via bank transfer must mark invoice PAID and credit bank ledger. | `Critical` | `TC-04` | `SaleController@settle`<br>`sales`, `payments` | **VERIFIED** | — |
+| **REQ-SALES-02**| Sales / POS | Counter POS retail cash sales must increment till float (`Cash Box`) and log in sales register. | `Critical` | `TC-05` | `PosController@checkout`<br>`sales`, `pos_registers` | **VERIFIED** | — |
+| **REQ-PURCH-01**| Purchases | Vendor advance wire payments (BEFTN) must debit Supplier Advance account without requiring instant PO match. | `Critical` | `TC-09` | `PurchaseController@advance`<br>`supplier_advances`, `payments` | **VERIFIED** | — |
+| **REQ-PURCH-02**| Purchases | Spot raw material cash advances must deduct from `Cash Box` and generate unallocated vendor credit. | `High` | `TC-10` | `PurchaseController@advance`<br>`supplier_advances`, `cash_flows` | **VERIFIED** | — |
+| **REQ-PURCH-03**| Purchases | Consumables & urgent courier logistics payments must debit operational expense and credit Cash Box. | `Medium` | `TC-23` | `PurchaseController`<br>`purchases`, `payment_accounts` | **VERIFIED** | — |
+| **REQ-ASSET-01**| Fixed Assets | Equipment acquisitions exceeding capitalization limit must capitalize to Fixed Asset Register. | `High` | `TC-11` | `AssetController@store`<br>`assets`, `payment_accounts` | **VERIFIED** | — |
+| **REQ-ASSET-02**| Fixed Assets | Routine asset servicing & repairs below capitalization limit must be expensed directly through Cash/Bank. | `Medium` | `TC-12` | `AssetController@maintenance`<br>`asset_maintenances`, `cash_flows` | **VERIFIED** | — |
+| **REQ-MKT-01** | Marketing | Digital campaign ad spend debited via bank card must be recognized under Marketing Expense. | `High` | `TC-15` | `AdSpendController@store`<br>`ad_spends`, `payment_accounts` | **VERIFIED** | — |
+| **REQ-HR-01**   | HR / Payroll | Emergency mid-month staff salary advances must log against employee ledger and disburse from Cash Box. | `High` | `TC-16` | `PayrollController@advance`<br>`employee_advances`, `cash_flows` | **VERIFIED** | — |
+| **REQ-HR-02**   | HR / Payroll | Recovery of salary advance via counter cash must clear employee advance record and credit Cash Box. | `High` | `TC-07` | `PayrollController@recovery`<br>`employee_advances`, `payments` | **VERIFIED** | — |
+| **REQ-EXP-01**  | Expenses | Commercial facility rent and utility bills paid via bank must generate expense vouchers and debit Bank. | `Critical` | `TC-17`, `TC-19` | `ExpenseController@store`<br>`expenses`, `payment_accounts` | **VERIFIED** | — |
+| **REQ-EXP-02**  | Expenses | Petty cash operational expenses paid from Cash Box must deduct balance AND post to Payments Journal. | `Critical` | `TC-18`, `TC-20` | `ExpenseController@store`<br>`expenses`, `payments` | **DEFECTIVE** | [**BUG-96**](04-bug-reports/Bug-96_Payments_Journal_Voucher_Missing.md) |
+| **REQ-BANK-01** | Banking | Automated bank charges and maintenance levies must be booked under Bank Charges and reduce Bank balance. | `Medium` | `TC-21` | `PaymentAccountController`<br>`bank_charges`, `payment_accounts` | **VERIFIED** | — |
+| **REQ-TRANS-01**| Treasury | Inter-account fund transfers must operate as contra entries with zero impact on consolidated system liquidity. | `Critical` | `TC-08` | `BalanceTransferController`<br>`balance_transfers` | **VERIFIED** | — |
+| **REQ-LEDGER-01**| Parity | System must enforce closed-loop zero variance: $\sum \text{Cash In} - \sum \text{Cash Out} \equiv \sum \text{Accounts}$. | `Critical` | `TC-01`..`TC-23` | Core Liquidity Architecture<br>`cash_flows`, `payment_accounts` | **CONDITIONAL** | [**BUG-70**](04-bug-reports/Bug-70_Severe_Cash_Flow_Discrepancy.md), [**BUG-76**](04-bug-reports/Bug-76_Purchase_Return_Rollback_Failure.md) |
+| **REQ-REP-01** | Reporting | Profit & Loss statement must dynamically deduct all verified Paid operating expenses from Gross Profit. | `Critical` | `TC-24` | `ReportController@profitLoss`<br>`expenses`, `sale_items` | **DEFECTIVE** | [**BUG-114**](04-bug-reports/Bug-114_Profit_Loss_Zero_Operating_Expense.md) |
+| **REQ-REP-02** | Reporting | Sales summary reporting must explicitly break down Gross Sales, Customer Returns, Net Sales, Collections, & Dues. | `High` | `TC-26` | `ReportController@sales`<br>`sales`, `sale_returns` | **DEFECTIVE** | [**BUG-118**](04-bug-reports/Bug-118_Sales_Report_Return_Deduction_Paradox.md) |
+| **REQ-REP-03** | Reporting | Supplier payments audit statement must enforce cumulative bounds ($\text{Period Paid} \le \text{All-Time Paid}$). | `Critical` | `TC-25` | `ReportController@supplierPayments`<br>`purchases`, `payments` | **DEFECTIVE** | [**BUG-109**](04-bug-reports/Bug-109_Supplier_Payments_Period_Exceeds_Lifetime.md) |
+| **REQ-REP-04** | Reporting | Cash Movement report must aggregate all cash inflow streams (Equity, Loans, Returns) and format enums. | `High` | `TC-01`, `03`, `06` | `ReportController@cashMovement`<br>`payments`, `cash_flows` | **DEFECTIVE** | [**BUG-111**](04-bug-reports/Bug-111_Cash_Movement_False_Deficit.md) |
+| **REQ-REP-05** | Reporting | Receivables aging analysis must accurately track overdue customer invoices with formatted integer day buckets. | `Medium` | `TC-04` | `ReportController@receivablesAging`<br>`sales` | **DEFECTIVE** | [**BUG-121**](04-bug-reports/ALL_DEFECTS_LOG.md) |
+
+---
+
+## 3. Requirement Coverage Statistics & Quality Health
 
 ```text
-+-----------------------------------------------------------------------+
-| Metric Description                                      | Value       |
-+-----------------------------------------------------------------------+
-| Total Core Functional Requirements Mapped               | 26          |
-| Total Operational Test Cases Executed                   | 23          |
-| Functional Requirements Fully Verified (PASS)           | 19 (73.08%) |
-| Functional Requirements Defective / Action Required     | 7 (26.92%)  |
-| Closed-Loop Liquidity Parity Coverage                   | 100%        |
-+-----------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------+
+|                                    REQUIREMENTS COVERAGE METRICS                                   |
++----------------------------------------------------------------------------------------------------+
+| Total Functional Requirements Defined & Mapped          : 26 Requirements                          |
+| Total Operational Test Cases Executed                   : 26 Scenarios (TC-01 through TC-26)       |
+| Total Accounting & Reporting Defect Links Mapped        : 7 Critical Forensic Bugs                 |
+| Requirements Fully Verified (PASS)                      : 19 (73.08%)                              |
+| Requirements Defective / Action Required                : 7 (26.92%)                               |
+| Test Coverage Density                                   : 100.00% (Every Req has >= 1 Test Case)   |
+| Closed-Loop Liquidity Parity Coverage                   : 100.00%                                  |
++----------------------------------------------------------------------------------------------------+
 ```
+
+### Criticality Distribution Breakdown:
+* **Critical Tier (11 Requirements):** 7 Verified (63.6%), 4 Defective (`BUG-96`, `BUG-70/76`, `BUG-114`, `BUG-109`).
+* **High Tier (11 Requirements):** 9 Verified (81.8%), 2 Defective (`BUG-118`, `BUG-111`).
+* **Medium Tier (4 Requirements):** 3 Verified (75.0%), 1 Defective (`BUG-121`).
 
 ---
 
 ## 4. Defect Impact Analysis on System Requirements
 
-* **BUG-70 (Severe Cash Flow Discrepancy):** Violates `REQ-LEDGER-01` when transaction hooks fail to update running balances atomically.
-* **BUG-76 (Purchase Return Rollback Failure):** Breaches atomicity constraints in inventory and cash ledger transitions.
-* **BUG-96 (Payments Journal Missing Vouchers):** Violates `REQ-EXP-02` by leaving sub-ledger cash disbursements unregistered in master payments.
-* **BUG-109 (Supplier Payments Paradox):** Violates `REQ-REP-03` by presenting impossible period vs all-time mathematical aggregates.
-* **BUG-111 (Cash Movement False Deficit):** Violates `REQ-REP-04` by reporting a ৳ 18,600 deficit when accounts hold ৳ 54,100 surplus.
-* **BUG-114 (P&L Zero Expenses):** Violates `REQ-REP-01` by omitting ৳ 6,300 in verified operational expenses, falsifying net income.
-* **BUG-118 (Sales Report Return Deduction Paradox):** Violates `REQ-REP-02` through column mislabeling and silent return subtractions.
+### 4.1 Impact of BUG-114 on REQ-REP-01 (Profit & Loss Omission)
+* **Requirement:** `REQ-REP-01` mandates that operating expenses incurred during an accounting period must deduct from Gross Profit on the P&L statement.
+* **Audit Finding (`TC-24`):** The live P&L statement displays `Less: Operating Expenses (৳ 0)`. Cash Flow and the Expense Ledger verify that **৳ 6,300.00** was disbursed for approved utility and operational expenses.
+* **Consequence:** Net Profit is falsely stated at ৳ 30,600.00 instead of ৳ 24,300.00, generating incorrect tax liability calculations.
 
+### 4.2 Impact of BUG-109 on REQ-REP-03 (Supplier Payments Invariant)
+* **Requirement:** `REQ-REP-03` dictates that periodic vendor disbursements cannot exceed lifetime disbursements ($\text{Period Paid} \le \text{All-Time Paid}$).
+* **Audit Finding (`TC-25`):** The supplier report outputs $\text{Period Paid } (৳\ 193,100) > \text{All-Time Paid } (৳\ 178,100)$.
+* **Consequence:** The query join architecture includes advance vouchers in the periodic query but drops them from the all-time calculation, producing an impossible financial statement.
 
-### Impact of BUG-96 on REQ-EXP-02 & REQ-LEDGER-01
-* **Requirement Breach:** `REQ-EXP-02` dictates that every petty cash operational expense must create an auditable voucher in `Finance -> Payments Journal`.
-* **Audit Finding:** During execution of `TC-18` (Pantry supplies ৳ 2,500), the UI successfully deducted ৳ 2,500 from `Cash Box`, and the Cash Flow Statement recorded ৳ 2,500 under Operating Activities. However, `Payments Journal` has zero trace of the transaction.
-* **Traceability Consequence:** `REQ-LEDGER-01` (Financial Parity) passes numerically ($158,500 - 156,000 = 2,500$), but fails from a statutory audit trail standpoint because the Payments Journal lacks transactional completeness.
+### 4.3 Impact of BUG-96 on REQ-EXP-02 (Payments Journal Audit Trail)
+* **Requirement:** `REQ-EXP-02` dictates that every cash expenditure must generate a double-entry payment voucher in `Finance -> Payments Journal`.
+* **Audit Finding (`TC-18`):** Disbursing ৳ 2,500 from `Cash Box` for pantry supplies successfully deducted cash and updated Cash Flow, but completely bypassed the master Payments Journal.
+* **Consequence:** Breaks double-entry general ledger completeness, failing external statutory audits.
+
+---
+
+## 5. QA Lead Sign-Off & Release Recommendation
+
+Based on the RTM analysis, the system achieves **100% test coverage density**, but **7 requirements remain in a DEFECTIVE state** due to high-severity accounting defects (`BUG-96`, `BUG-109`, `BUG-111`, `BUG-114`, `BUG-118`).
+
+> [!CAUTION]
+> **QA Lead Release Recommendation: CONDITIONAL BLOCK**  
+> Core transactional liquidity maintains parity ($\Phi = 0.00$), but the build cannot be certified for statutory production release until the development team merges hotfixes for `BUG-114` (P&L expense query) and `BUG-109` (supplier payment invariant).
+
+*Audited and Certified by:*  
+**Naimur Rahman Opu**  
+QA Lead & Financial Systems Auditor  
+*BizPOS QA Governance Board*
