@@ -209,10 +209,11 @@ bizpos-qa-audit-framework/
 │   ├── tsconfig.json                                  # Path mappings & TypeScript compiler options
 │   ├── playwright.config.ts                           # Multi-browser viewport configs & HTML reporters
 │   ├── fixtures/testData.ts                           # Reconciled baseline constants & defect payloads
-│   ├── pages/                                         # Page Object Models (Base, Login, CashFlow, Accounts, Expense)
-│   └── tests/                                         # E2E test specs (parity, bug96, bug76)
+│   ├── pages/                                         # POM: Base, Login, CashFlow, PaymentAccounts, Expense, Reports
+│   └── tests/                                         # E2E test specs (financial_parity, reports_audit, bug96, bug76)
 └── scripts/
-    └── reconciliation_audit.py                        # Standalone Python zero-variance parity validator
+    ├── reconciliation_audit.py                        # Standalone Python zero-variance parity validator
+    └── reconciliation_audit.js                        # Node.js dual-engine parity & cross-report validator
 ```
 
 ---
