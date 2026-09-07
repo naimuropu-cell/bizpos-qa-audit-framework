@@ -2,6 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/naimuropu-cell/bizpos-qa-audit-framework/actions/workflows/audit-ci.yml"><img src="https://img.shields.io/badge/QA-Audit%20Framework-0A66C2?style=for-the-badge&logo=checkmarx&logoColor=white" alt="QA Framework" /></a>
+  <a href="02-test-cases/"><img src="https://img.shields.io/badge/Test%20Cases-1%2C120%2B%20Enterprise-007ACC?style=for-the-badge&logo=microsoftexcel&logoColor=white" alt="1,120+ Test Cases" /></a>
   <a href="playwright-tests/"><img src="https://img.shields.io/badge/Playwright-E2E%20Testing-45BA4B?style=for-the-badge&logo=playwright&logoColor=white" alt="Playwright E2E" /></a>
   <a href="playwright-tests/"><img src="https://img.shields.io/badge/TypeScript-Test%20Automation-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" /></a>
   <a href="#"><img src="https://img.shields.io/badge/Laravel-Backend%20Under%20Audit-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel" /></a>
@@ -191,34 +192,46 @@ High-risk financial areas receive higher testing priority:
 ```text
 02-test-cases/
 │
-├── Financial_Reconciliation_Cases.md
-├── Financial_Reconciliation_Cases.csv
-└── Financial_Reconciliation_Cases.xlsx
+├── Financial_Reconciliation_Cases.md   # Master QA Suite Documentation (1,120 Enterprise + 26 Financial)
+├── Financial_Reconciliation_Cases.csv  # 1,120 Machine-Readable Cases (8 ERP Modules)
+└── Financial_Reconciliation_Cases.xlsx # 1,120 Styled OpenXML Cases with Headers, Borders & Filters
 ```
 
-The project contains **26 end-to-end financial reconciliation test cases**.
+The project contains **1,120 Enterprise Test Cases** across 8 core ERP modules, paired with **26 In-Depth Financial Invariant Reconciliation Scenarios**:
 
-Test cases cover transaction flows such as:
-* Sales
-* Customer payments
-* Supplier payments
-* Expenses
-* Returns
-* Cash movement
-* Account balances
-* Financial reports
-* Ledger synchronization
-* Journal synchronization
+#### 1. Enterprise Module Test Suite (1,120 Test Cases)
+Structured across 8 ERP domains, 80 operational scenarios, 7 testing methodologies (Positive, Negative, Boundary, Reconciliation, Security, UI/UX, Concurrency), and dual-variant assertions:
+
+| ERP Functional Module | Scenarios | Coverage Scope & Methodologies | Total Cases |
+| :--- | :---: | :--- | :---: |
+| **POS & Checkout** | 10 | Barcode lookup, tender split, negative price guard, cart persistence, VAT | **140** |
+| **Sales & Invoicing** | 10 | Invoicing lifecycle, credit limits, cancellation rollback, discounts, returns | **140** |
+| **Purchases & GRN** | 10 | PO generation, GRN inspection, batch expiry, debit notes, supplier ledger sync | **140** |
+| **Inventory & Stock Management** | 10 | Real-time depletion, low-stock alerts, FIFO valuation, warehouse transfers | **140** |
+| **Finance & Ledgers** | 10 | Cash Flow double-entry, petty cash vouchers, loan amortization, transfers | **140** |
+| **Reports & Financial Reconciliation**| 10 | DTS zero-variance, P&L expenses ingestion, receivables aging, supplier bounds | **140** |
+| **Customers & Suppliers** | 10 | Phone/email identity locks, credit limits, statements export, Unicode Bangla | **140** |
+| **User Management & Security** | 10 | RBAC cashier vs admin, URL route tampering, session invalidation, SQLi & XSS | **140** |
+| **Total Enterprise Test Cases** | **80** | **7 Methodologies &times; 2 Variants per Scenario** | **1,120** |
+
+#### 2. Deep Financial Reconciliation Cases (TC-01 through TC-26)
+In addition to the 1,120 functional test cases, 26 complex cross-module financial invariant test cases audit accounting integrity:
+* Sales & Invoicing revenue recognition
+* Customer & Supplier payment reconciliations
+* Operating expenses & petty cash floats
+* Sales & Purchase return stock/ledger rollbacks
+* Cash movement & bank float synchronization
+* Double-entry journal voucher verification
 
 Each test case contains:
-* **Test ID**
-* **Objective**
-* **Preconditions**
-* **Test Steps**
-* **Input Data**
-* **Expected Result**
-* **Financial Formula**
-* **Expected System State**
+* **Test ID** (`TC-BP-0001` to `TC-BP-1120`, `TC-01` to `TC-26`)
+* **Module & Sub-module**
+* **Test Scenario & Objective**
+* **Execution Type** (Automated / Manual)
+* **Severity & Priority**
+* **Step-by-Step Instructions**
+* **Test Data / Payload**
+* **Expected Result & Financial Ledger Invariant**
 
 ---
 
@@ -1058,19 +1071,19 @@ The framework demonstrates practical experience in:
 ## 📊 Final Audit Snapshot
 
 ```text
-╔══════════════════════════════════════╗
-║        BizPOS Pro QA Audit           ║
-╠══════════════════════════════════════╣
-║ Total Defects Audited       118      ║
-║ Fixed                         91     ║
-║ Need Revision                  6     ║
-║ Not Fixed                     18     ║
-║                                      ║
-║ Financial Test Cases          26     ║
-║ Automated E2E Suites          4      ║
-║ Browser Coverage        Chromium     ║
-║                         Firefox      ║
-╚══════════════════════════════════════╝
+╔════════════════════════════════════════════════╗
+║             BizPOS Pro QA Audit                ║
+╠════════════════════════════════════════════════╣
+║ Total Defects Audited                   118    ║
+║ Fixed                                    91    ║
+║ Need Revision                             6    ║
+║ Not Fixed                                18    ║
+║                                                ║
+║ Enterprise Test Cases (8 Modules)     1,120    ║
+║ Core Financial Invariant Cases           26    ║
+║ Automated E2E Suites                      4    ║
+║ Browser Coverage            Chromium, Firefox  ║
+╚════════════════════════════════════════════════╝
 ```
 
 ---

@@ -4,12 +4,36 @@
 > **Author & QA Lead:** **Md. Naimur Rahman Apu** ([LinkedIn](https://www.linkedin.com/in/naimur-rahman-apu/) &nbsp;|&nbsp; `@naimuropu-cell`)  
 > **Role / Title:** Software QA Engineer & Financial Systems Auditor  
 > **Target Environment:** BizPOS / YesSME ERP v2.4 (Live Production & Staging Core)  
-> **Audited Modules:** Capital, Loans, POS, Invoicing, Procurement, Fixed Assets, Payroll, Expenses, Banking, and Reports  
-> **Zero-Variance Parity Invariant:** $\sum \text{Cash In} - \sum \text{Cash Out} \equiv \text{Net Liquidity} \equiv \sum \text{Active Accounts}$
+> **Total Test Cases Cataloged:** **1,120 Enterprise Test Cases** (`TC-BP-0001` to `TC-BP-1120`) across 8 ERP Modules  
+> **Core Financial Invariants:** **26 Deep Reconciliation Scenarios** (`TC-01` to `TC-26`)  
+> **Downloadable Formats:** [`Financial_Reconciliation_Cases.xlsx`](Financial_Reconciliation_Cases.xlsx) (Formatted Excel) &nbsp;|&nbsp; [`Financial_Reconciliation_Cases.csv`](Financial_Reconciliation_Cases.csv) (Machine-Readable CSV)
 
 ---
 
-## 1. Master Financial Reconciliation Test Matrix (TC-01 to TC-26)
+## 0. Enterprise Test Suite Matrix (1,120 Test Cases Breakdown)
+
+The complete quality assurance baseline covers **1,120 structured test cases** generated across 8 ERP functional domains, 80 core scenarios, 7 testing methodologies (Positive, Negative, Boundary, Reconciliation, Security, UI/UX, Concurrency), and dual-variant assertions:
+
+| ERP Functional Module | Scenarios | Test Methodologies & Types Covered | Total Test Cases | Primary Coverage & Focus Areas |
+| :--- | :---: | :--- | :---: | :--- |
+| **1. POS & Checkout** | 10 | Positive, Negative, Boundary, Reconciliation, Security, UI/UX, Concurrency | **140** | Barcode lookup, multi-tender split, negative price guard, cart persistence, VAT |
+| **2. Sales & Invoicing** | 10 | Positive, Negative, Boundary, Reconciliation, Security, UI/UX, Concurrency | **140** | Invoicing lifecycle, credit limits, cancellation rollback, discounts, sales returns |
+| **3. Purchases & GRN** | 10 | Positive, Negative, Boundary, Reconciliation, Security, UI/UX, Concurrency | **140** | PO generation, GRN inspection, batch expiry, debit notes, supplier ledger sync |
+| **4. Inventory & Stock Management** | 10 | Positive, Negative, Boundary, Reconciliation, Security, UI/UX, Concurrency | **140** | Real-time depletion, low-stock alerts, FIFO valuation, warehouse transfers, Excel import |
+| **5. Finance & Ledgers** | 10 | Positive, Negative, Boundary, Reconciliation, Security, UI/UX, Concurrency | **140** | Cash Flow double-entry, petty cash vouchers, loan amortization, inter-account transfers |
+| **6. Reports & Financial Reconciliation** | 10 | Positive, Negative, Boundary, Reconciliation, Security, UI/UX, Concurrency | **140** | DTS zero-variance, P&L expenses ingestion, receivables aging, supplier bounds |
+| **7. Customers & Suppliers** | 10 | Positive, Negative, Boundary, Reconciliation, Security, UI/UX, Concurrency | **140** | Phone/email identity locks, credit limits, statements export, Unicode Bangla support |
+| **8. User Management & Security** | 10 | Positive, Negative, Boundary, Reconciliation, Security, UI/UX, Concurrency | **140** | RBAC cashier vs admin, URL route tampering, session invalidation, SQLi & XSS guards |
+| **GRAND TOTAL** | **80** | **7 Methodologies &times; 2 Variants per Scenario** | **1,120** | **Complete Enterprise System Quality Baseline** |
+
+> [!TIP]
+> The complete table of all **1,120 test cases** with step-by-step reproduction instructions, input data, and expected results is packaged in the companion files:
+> * 📊 [**`Financial_Reconciliation_Cases.xlsx`**](Financial_Reconciliation_Cases.xlsx) &mdash; Formatted OpenXML Excel workbook with dark blue header (`#1F4E78`), column autofits, wrapped text, and status styles.
+> * 📄 [**`Financial_Reconciliation_Cases.csv`**](Financial_Reconciliation_Cases.csv) &mdash; Machine-readable raw dataset ready for CI/CD runners and Jira/TestRail/Xray imports.
+
+---
+
+## 1. Master Financial Reconciliation Deep-Dive Cases (TC-01 to TC-26)
 
 The matrix below documents the complete suite of 26 financial audit test scenarios executed across the BizPOS / YesSME ERP ecosystem:
 
