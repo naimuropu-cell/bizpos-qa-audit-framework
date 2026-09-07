@@ -24,7 +24,7 @@
     "qa",
     "qa-lead"
   ],
-  "author": "QA Lead & Financial Systems Architect",
+  "author": "Md. Naimur Rahman Apu (https://www.linkedin.com/in/naimur-rahman-apu/)",
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.42.1",

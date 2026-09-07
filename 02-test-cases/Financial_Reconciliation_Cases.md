@@ -1,6 +1,8 @@
 # Financial Reconciliation Test Cases (TC-01 through TC-26)
 
 > **Execution Suite:** `SUITE-FIN-RECON-01` &nbsp;|&nbsp; **Classification:** QA Lead Audit Baseline  
+> **Author & QA Lead:** **Md. Naimur Rahman Apu** ([LinkedIn](https://www.linkedin.com/in/naimur-rahman-apu/) &nbsp;|&nbsp; `@naimuropu-cell`)  
+> **Role / Title:** Software QA Engineer & Financial Systems Auditor  
 > **Target Environment:** BizPOS / YesSME ERP v2.4 (Live Production & Staging Core)  
 > **Audited Modules:** Capital, Loans, POS, Invoicing, Procurement, Fixed Assets, Payroll, Expenses, Banking, and Reports  
 > **Zero-Variance Parity Invariant:** $\sum \text{Cash In} - \sum \text{Cash Out} \equiv \text{Net Liquidity} \equiv \sum \text{Active Accounts}$

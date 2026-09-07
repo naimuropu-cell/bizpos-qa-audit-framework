@@ -1,7 +1,8 @@
 # Requirements Traceability Matrix (RTM): BizPOS ERP
 
 > **Document Identifier:** `RTM-BIZPOS-FIN-001` &nbsp;|&nbsp; **Version:** `3.0-LEAD-AUDIT`  
-> **Author & QA Lead:** Naimur Rahman Opu (`naimuropu-cell`)  
+> **Author & QA Lead:** **Md. Naimur Rahman Apu** ([LinkedIn](https://www.linkedin.com/in/naimur-rahman-apu/) &nbsp;|&nbsp; `@naimuropu-cell`)  
+> **Role / Title:** Software QA Engineer & Financial Systems Auditor  
 > **Scope:** Bidirectional Traceability: Business Requirements $\longleftrightarrow$ Test Cases (TC-01..26) $\longleftrightarrow$ Defect Specs $\longleftrightarrow$ Backend Controllers  
 > **Standard:** IEEE 829 / ISO 29119 Quality Assurance Traceability Standards
 
@@ -11,7 +12,7 @@
 
 | Stakeholder Role | Name | Department | Approval Status | Sign-Off Date |
 | :--- | :--- | :--- | :---: | :---: |
-| **QA Lead & Systems Auditor** | Naimur Rahman Opu | Quality Engineering & Audit | **APPROVED** | 08 Sep 2026 |
+| **QA Lead & Systems Auditor** | **Md. Naimur Rahman Apu** | Quality Engineering & Audit | **APPROVED** | 08 Sep 2026 |
 | **Lead Backend Architect** | Architecture Lead | Core Engineering | **REVIEWED** | 08 Sep 2026 |
 | **Financial Controller** | Head of Corporate Finance | Treasury & Audit | **CERTIFIED** | 08 Sep 2026 |
 
@@ -103,6 +104,6 @@ Based on the RTM analysis, the system achieves **100% test coverage density**, b
 > Core transactional liquidity maintains parity ($\Phi = 0.00$), but the build cannot be certified for statutory production release until the development team merges hotfixes for `BUG-114` (P&L expense query) and `BUG-109` (supplier payment invariant).
 
 *Audited and Certified by:*  
-**Naimur Rahman Opu**  
-QA Lead & Financial Systems Auditor  
-*BizPOS QA Governance Board*
+**Md. Naimur Rahman Apu**  
+Software QA Engineer & Financial Systems Quality Auditor  
+*BizPOS QA Governance Board* &nbsp;|&nbsp; [LinkedIn Profile](https://www.linkedin.com/in/naimur-rahman-apu/)

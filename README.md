@@ -12,6 +12,8 @@
 [![Reports Audit](https://img.shields.io/badge/Reports_Suite-13_Modules_Audited-purple.svg)](#3-master-cross-report-audit-matrix--live-findings)
 [![Playwright E2E](https://img.shields.io/badge/Playwright-TypeScript_POM-orange.svg)](playwright-tests/)
 [![Executive PDF Deliverable](https://img.shields.io/badge/Executive_Deliverable-PDF_Report-red.svg)](BizPOS_Master_Cross_Report_Audit_Report.pdf)
+[![Author](https://img.shields.io/badge/Author-Md._Naimur_Rahman_Apu-brightgreen.svg)](https://www.linkedin.com/in/naimur-rahman-apu/)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-naimur--rahman--apu-0077b5?logo=linkedin)](https://www.linkedin.com/in/naimur-rahman-apu/)
 
 ---
 
@@ -218,9 +220,12 @@ bizpos-qa-audit-framework/
 
 ---
 
-## 8. QA Leadership & Verification Standards
+## 8. QA Leadership & Author Profile
 
-* **QA Lead & Systems Auditor:** Naimur Rahman Opu (`naimuropu-cell`)
-* **Methodology:** ISA 315 / ISA 500 compliant audit standards, ISTQB advanced test management principles, and automated non-mutating double-entry ledger reconciliation.
-* **Target Environment:** BizPOS / YesSME ERP v2.4 (Live Production & Staging Verification).
-* **Repository:** [https://github.com/naimuropu-cell/bizpos-qa-audit-framework.git](https://github.com/naimuropu-cell/bizpos-qa-audit-framework.git)
+* **Author & QA Lead:** **Md. Naimur Rahman Apu**
+* **Role / Title:** Software QA Engineer | Financial Systems Quality Architect
+* **LinkedIn:** [linkedin.com/in/naimur-rahman-apu](https://www.linkedin.com/in/naimur-rahman-apu/)
+* **GitHub:** [@naimuropu-cell](https://github.com/naimuropu-cell)
+* **Framework Repository:** [https://github.com/naimuropu-cell/bizpos-qa-audit-framework.git](https://github.com/naimuropu-cell/bizpos-qa-audit-framework.git)
+* **Audit Methodology:** ISA 315 / ISA 500 financial audit standards, ISTQB advanced test management principles, and automated non-mutating double-entry ledger reconciliation.
+* **Target System:** BizPOS / YesSME ERP v2.4 (Live Production & Staging Verification).

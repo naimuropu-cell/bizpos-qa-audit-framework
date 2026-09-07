@@ -1,7 +1,8 @@
 # Master Quality Strategy & Financial Systems Audit Plan: BizPOS ERP
 
 > **Document Identifier:** `STP-BIZPOS-FIN-001` &nbsp;|&nbsp; **Version:** `3.0-LEAD-AUDIT`  
-> **Author & QA Lead:** Naimur Rahman Opu (`naimuropu-cell`)  
+> **Author & QA Lead:** **Md. Naimur Rahman Apu** ([LinkedIn](https://www.linkedin.com/in/naimur-rahman-apu/) &nbsp;|&nbsp; `@naimuropu-cell`)  
+> **Role / Title:** Software QA Engineer & Financial Systems Auditor  
 > **Classification:** Enterprise Confidential / QA Governance & Release Gate  
 > **Target System:** **BizPOS / YesSME ERP v2.4** (Multi-Tenant Enterprise Core)  
 > **Methodology:** ISTQB Advanced Test Management, ISO/IEC/IEEE 29119, ISA 315/500 Financial Audit Standards
@@ -12,7 +13,7 @@
 
 | Role / Title | Stakeholder Name | Department / Function | Approval Status | Sign-Off Date |
 | :--- | :--- | :--- | :---: | :---: |
-| **QA Lead & Systems Auditor** | Naimur Rahman Opu | Quality Engineering & Audit | **APPROVED** | 08 Sep 2026 |
+| **QA Lead & Systems Auditor** | **Md. Naimur Rahman Apu** | Quality Engineering & Audit | **APPROVED** | 08 Sep 2026 |
 | **Lead Software Architect** | Engineering Architecture Lead | Core Backend Engineering | **REVIEWED** | 08 Sep 2026 |
 | **Director of Product** | Product Operations Lead | ERP Business Solutions | **APPROVED** | 08 Sep 2026 |
 | **Financial Controller** | Head of Corporate Finance | Treasury & General Ledger | **CERTIFIED** | 08 Sep 2026 |
