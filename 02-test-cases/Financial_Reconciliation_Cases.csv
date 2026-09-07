@@ -22,4 +22,7 @@
 "TC-21","Banking & Charges","UCB Corporate Account Maintenance & SMS Alert Fee","Bank Direct Levy",0.00,500.00,14500.00,14000.00,28500.00,"PASS"
 "TC-22","Capital Management","Partner Monthly Personal Drawings / Capital Withdrawal","Bank Transfer",0.00,13000.00,1500.00,14000.00,15500.00,"PASS"
 "TC-23","Purchasing & Expenses","Urgent Packaging Tape, Logistics & Counter Consumables","Counter Cash Slip",0.00,13000.00,1500.00,1000.00,2500.00,"PASS"
-"TOTAL","AUDITED","Zero-Variance Parity Invariant","Consolidated All Accounts",158500.00,156000.00,1500.00,1000.00,2500.00,"0.00 VARIANCE"
+"TC-24","Financial Reports (P&L)","Operating Expenses Dynamic Reconciliation vs Paid Vouchers (BUG-114)","/admin/reports/profit-loss",0.00,6300.00,0.00,0.00,24300.00,"FAIL (BUG-114)"
+"TC-25","Financial Reports (AP)","Supplier Payments Cumulative Invariant Period <= All-Time (BUG-109)","/admin/reports/supplier-payments",0.00,193100.00,0.00,0.00,0.00,"FAIL (BUG-109)"
+"TC-26","Financial Reports (Sales)","Sales Report Return Deduction & Netting Invariance (BUG-118)","/admin/reports/sales",151000.00,25500.00,0.00,0.00,125500.00,"FAIL (BUG-118)"
+"TOTAL","AUDITED","Zero-Variance Parity Invariant Baseline","Consolidated Operational Accounts",158500.00,156000.00,1500.00,1000.00,2500.00,"0.00 VARIANCE"
