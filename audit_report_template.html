@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BizPOS / YesSME ERP — Master Cross-Report Audit & Reconciliation Report</title>
+<style>
+  @page {
+    size: A4 portrait;
+    margin: 14mm 12mm 14mm 12mm;
+    @bottom-right {
+      content: "Page " counter(page);
+      font-size: 8pt;
+      color: #64748b;
+    }
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #1e293b;
+    background-color: #ffffff;
+    font-size: 8.8pt;
+    line-height: 1.45;
+  }
+
+  .header-container {
+    border-bottom: 2.5px solid #0f172a;
+    padding-bottom: 12px;
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .title-area h1 {
+    font-size: 16.5pt;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.4px;
+    margin-bottom: 3px;
+  }
+
+  .title-area .subtitle {
+    font-size: 9.5pt;
+    font-weight: 600;
+    color: #475569;
+  }
+
+  .meta-badge-box {
+    text-align: right;
+    font-size: 8pt;
+    color: #64748b;
+    line-height: 1.35;
+  }
+
+  .meta-badge-box .env-tag {
+    display: inline-block;
+    background-color: #fee2e2;
+    color: #991b1b;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 7.5pt;
+    margin-bottom: 3px;
+    border: 1px solid #fca5a5;
+  }
+
+  h2 {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #0f172a;
+    margin-top: 14px;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 1.5px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  h3 {
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: #1e293b;
+    margin-top: 10px;
+    margin-bottom: 4px;
+  }
+
+  p {
+    margin-bottom: 6px;
+    color: #334155;
+  }
+
+  /* Callout Alert */
+  .alert-box {
+    background-color: #f8fafc;
+    border-left: 4px solid #0284c7;
+    border-radius: 0 6px 6px 0;
+    padding: 9px 12px;
+    margin: 8px 0 12px 0;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  }
+
+  .alert-box.danger {
+    background-color: #fff1f2;
+    border-left-color: #e11d48;
+  }
+
+  .alert-title {
+    font-weight: 800;
+    font-size: 9pt;
+    color: #9f1239;
+    margin-bottom: 3px;
+  }
+
+  .alert-content {
+    font-size: 8.5pt;
+    color: #475569;
+  }
+
+  /* Status Cards Summary Grid */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin: 9px 0 12px 0;
+  }
+
+  .stat-card {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 8px 10px;
+    text-align: center;
+  }
+
+  .stat-card.pass {
+    border-top: 3.5px solid #10b981;
+    background-color: #f0fdf4;
+  }
+
+  .stat-card.fail {
+    border-top: 3.5px solid #ef4444;
+    background-color: #fef2f2;
+  }
+
+  .stat-card.partial {
+    border-top: 3.5px solid #f59e0b;
+    background-color: #fffbeb;
+  }
+
+  .stat-card.neutral {
+    border-top: 3.5px solid #0284c7;
+    background-color: #f0f9ff;
+  }
+
+  .stat-card .num {
+    font-size: 15pt;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 2px;
+  }
+
+  .stat-card.pass .num { color: #047857; }
+  .stat-card.fail .num { color: #b91c1c; }
+  .stat-card.partial .num { color: #b45309; }
+  .stat-card.neutral .num { color: #0369a1; }
+
+  .stat-card .label {
+    font-size: 7.5pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #64748b;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0 12px 0;
+    font-size: 7.8pt;
+    page-break-inside: auto;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  th {
+    background-color: #0f172a;
+    color: #ffffff;
+    font-weight: 700;
+    text-align: left;
+    padding: 6px 7px;
+    border: 1px solid #1e293b;
+    font-size: 7.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  td {
+    padding: 5px 6px;
+    border: 1px solid #cbd5e1;
+    vertical-align: top;
+    line-height: 1.35;
+  }
+
+  tbody tr:nth-child(even) {
+    background-color: #f8fafc;
+  }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-weight: 800;
+    font-size: 6.8pt;
+    text-align: center;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+  }
+
+  .badge-pass {
+    background-color: #d1fae5;
+    color: #065f46;
+    border: 1px solid #6ee7b7;
+  }
+
+  .badge-fail {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+  }
+
+  .badge-crit {
+    background-color: #ffe4e6;
+    color: #881337;
+    border: 1px solid #fda4af;
+  }
+
+  .badge-partial {
+    background-color: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fcd34d;
+  }
+
+  .code-term {
+    font-family: "Courier New", Courier, monospace;
+    background-color: #f1f5f9;
+    padding: 1px 3px;
+    border-radius: 3px;
+    font-size: 7.2pt;
+    color: #0f172a;
+    border: 1px solid #e2e8f0;
+  }
+
+  .mono-box {
+    font-family: "Courier New", Courier, monospace;
+    background-color: #0f172a;
+    color: #f8fafc;
+    border-radius: 5px;
+    padding: 8px 10px;
+    font-size: 7.5pt;
+    line-height: 1.4;
+    margin: 6px 0 10px 0;
+    page-break-inside: avoid;
+  }
+
+  .mono-box .accent { color: #38bdf8; font-weight: bold; }
+  .mono-box .green { color: #4ade80; font-weight: bold; }
+  .mono-box .red { color: #f87171; font-weight: bold; }
+  .mono-box .yellow { color: #fde047; }
+
+  .page-break {
+    page-break-before: always;
+  }
+
+  .section-desc {
+    font-size: 8.5pt;
+    color: #475569;
+    margin-bottom: 7px;
+  }
+
+  .bullet-list {
+    margin-left: 16px;
+    margin-bottom: 8px;
+  }
+
+  .bullet-list li {
+    font-size: 8.3pt;
+    margin-bottom: 3px;
+    color: #334155;
+  }
+
+  .footer-note {
+    margin-top: 16px;
+    border-top: 1px solid #cbd5e1;
+    padding-top: 8px;
+    font-size: 7.5pt;
+    color: #64748b;
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+
+  <!-- PAGE 1: VERDICT & START OF MATRIX -->
+  <div class="header-container">
+    <div class="title-area">
+      <h1>BizPOS / YesSME ERP — QA Financial Audit</h1>
+      <div class="subtitle">Master Cross-Report Audit Matrix & Transactional Reconciliation</div>
+    </div>
+    <div class="meta-badge-box">
+      <span class="env-tag">LIVE PRODUCTION AUDIT</span><br>
+      <strong>Audit Target:</strong> sme.yesbangladesh.net<br>
+      <strong>Audit Date:</strong> September 08, 2026<br>
+      <strong>Parity Metric:</strong> Zero-Variance (&Phi; = ৳ 0.00)
+    </div>
+  </div>
+
+  <h2>1. Direct Verdict: Did All Reports Give Correct Reports Based on Business Rules?</h2>
+  <div class="alert-box danger">
+    <div class="alert-title">
+      AUDIT VERDICT: COMPLIANCE RATE ONLY 38.46% (5 PASS, 8 DEFECTIVE)
+    </div>
+    <div class="alert-content">
+      <strong>NO. The reporting suite fails to provide accurate financial figures across 8 out of 13 modules.</strong><br>
+      While the core foundational banking/cash ledgers maintain strict mathematical parity (<strong>Payment Accounts ৳ 54,100.00 &equiv; Cash Flow Net ৳ 54,100.00</strong>), the secondary reporting modules suffer from severe SQL aggregation flaws, hardcoded operating expense omissions, inverted cumulative bounds, silent return deductions, and false deficit presentations.
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card neutral">
+      <div class="num">13</div>
+      <div class="label">Total Audited</div>
+    </div>
+    <div class="stat-card pass">
+      <div class="num">5</div>
+      <div class="label">Pass (38.5%)</div>
+    </div>
+    <div class="stat-card fail">
+      <div class="num">5</div>
+      <div class="label">Critical Fail (38.5%)</div>
+    </div>
+    <div class="stat-card partial">
+      <div class="num">3</div>
+      <div class="label">Partial / UI (23.0%)</div>
+    </div>
+  </div>
+
+  <div class="mono-box">
+    <span class="accent">CLOSED-LOOP FINANCIAL PARITY EQUATION:</span><br>
+    &Phi; = &sum; Cash In (৳ 369,500.00) &minus; &sum; Cash Out (৳ 315,400.00) &minus; &sum; Payment Accounts (৳ 54,100.00)<br>
+    &Phi; = ৳ 54,100.00 &minus; ৳ 54,100.00 &equiv; <span class="green">৳ 0.00 (ZERO VARIANCE CONFIRMED)</span><br>
+    <span class="yellow">&rarr; Core cash ledger is sound, but secondary reporting queries are desynchronized and defective.</span>
+  </div>
+
+  <h2 style="margin-top: 14px;">2. Master Cross-Report Audit Matrix</h2>
+  <div class="section-desc">
+    Cross-referencing every live report module against underlying transactional sources of truth (Cash Flow, Payments, Accounts, Sales, Purchases, Expenses, Assets, Loans, Investments).
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 4%;">#</th>
+        <th style="width: 17%;">Report Module & Path</th>
+        <th style="width: 18%;">Reported Live Values</th>
+        <th style="width: 20%;">Transactional Source of Truth</th>
+        <th style="width: 23%;">Mathematical Variance / Root Discrepancy</th>
+        <th style="width: 9%;">Verdict</th>
+        <th style="width: 9%;">Defect</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align: center; font-weight: bold;">01</td>
+        <td><strong>Profit & Loss</strong><br><span class="code-term">/admin/reports/profit-loss</span></td>
+        <td>Sales: ৳ 151,000<br>COGS: (৳ 120,400)<br>Gross: ৳ 30,600<br><strong>Expenses: (৳ 0)</strong><br>Net: ৳ 30,600</td>
+        <td>Cash Flow Paid Expenses = <strong>৳ 6,300</strong><br>Ad Spend = ৳ 700<br>Asset Maintenance = ৳ 1,000</td>
+        <td><strong>Expenses understated by ৳ 6,300.00</strong>.<br>Net Profit is artificially inflated by ৳ 6,300. Net margin falsified at 20.26% vs actual 16.09%.</td>
+        <td><span class="badge badge-crit">CRIT FAIL</span></td>
+        <td><strong>BUG-114</strong></td>
+      </tr>
+      <tr>
+        <td style="text-align: center; font-weight: bold;">02</td>
+        <td><strong>Supplier Payments</strong><br><span class="code-term">/admin/reports/supplier-payments</span></td>
+        <td>Purchases: ৳ 178,000<br>All-Time Paid: <strong>৳ 178,100</strong><br>Period Paid: <strong>৳ 193,100</strong></td>
+        <td>Purchase Report Bills = <strong>৳ 183,000</strong><br>Cash Flow Supplier Paid = <strong>৳ 183,000</strong><br>Supplier Advance = <strong>৳ 10,100</strong></td>
+        <td><strong>Period Paid exceeds All-Time Paid by ৳ 15,000</strong>.<br>Purchases understated by ৳ 5,000. All-Time query misses advances while Period query includes them.</td>
+        <td><span class="badge badge-crit">CRIT FAIL</span></td>
+        <td><strong>BUG-109</strong></td>
+      </tr>
+      <tr>
+        <td style="text-align: center; font-weight: bold;">03</td>
+        <td><strong>Cash Movement</strong><br><span class="code-term">/admin/reports/cash-movement</span></td>
+        <td>Inflow: ৳ 173,000<br>Outflow: ৳ 191,600<br><strong>Balance: -৳ 18,600 (Deficit)</strong></td>
+        <td>Cash Flow In = <strong>৳ 369,500</strong><br>Cash Flow Out = <strong>৳ 315,400</strong><br>Net Liquidity = <strong>+৳ 54,100</strong></td>
+        <td><strong>Reports false deficit of -৳ 18,600</strong>.<br>Query omits Capital In (৳ 100k), Loans (৳ 20k), PR Refunds (৳ 29k). Exposes raw string <span class="code-term">sale_return_refund</span>.</td>
+        <td><span class="badge badge-crit">CRIT FAIL</span></td>
+        <td><strong>BUG-111</strong></td>
+      </tr>
+      <tr>
+        <td style="text-align: center; font-weight: bold;">04</td>
+        <td><strong>Sales Summary</strong><br><span class="code-term">/admin/reports/sales</span></td>
+        <td>Total Sales: <strong>৳ 125,500</strong><br>Collected: <strong>৳ 136,000</strong><br>Due: <strong>৳ 15,000</strong></td>
+        <td>Detail Sales = <strong>৳ 151,000</strong><br>Sale Returns = <strong>৳ 25,500</strong><br>Gross: ৳ 136k + ৳ 15k = ৳ 151k</td>
+        <td><strong>Total Sales (৳ 125.5k) &lt; Collected (৳ 136k)</strong>.<br>Query silently deducts returns from sales column while leaving collections at gross without a "Returns" column.</td>
+        <td><span class="badge badge-fail">FAIL</span></td>
+        <td><strong>BUG-118</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- PAGE BREAK FOR PAGE 2 -->
+  <div class="page-break"></div>
+
+  <!-- PAGE 2: MATRIX CONTINUATION -->
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 4%;">#</th>
+        <th style="width: 17%;">Report Module & Path</th>
+        <th style="width: 18%;">Reported Live Values</th>
+        <th style="width: 20%;">Transactional Source of Truth</th>
+        <th style="width: 23%;">Mathematical Variance / Root Discrepancy</th>
+        <th style="width: 9%;">Verdict</th>
+        <th style="width: 9%;">Defect</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align: center; font-weight: bold;">05</td>
+        <td><strong>Monthly Summary</strong><br><span class="code-term">/admin/reports/monthly-summary</span></td>
+        <td>Sept Sales: <strong>৳ 125,500</strong><br>Sept Paid: <strong>৳ 136,000</strong><br>Sept Due: <strong>৳ 15,000</strong></td>
+        <td>Detail Sales = <strong>৳ 151,000</strong><br>Sale Returns = <strong>৳ 25,500</strong></td>
+        <td>Inherits identical sales deduction paradox where Total Sales is less than Total Paid. Navigation labeled "Monthly Summary" inside yearly view.</td>
+        <td><span class="badge badge-fail">FAIL</span></td>
+        <td><strong>BUG-119</strong></td>
+      </tr>
+      <tr>
+        <td style="text-align: center; font-weight: bold;">06</td>
+        <td><strong>Receivables Aging</strong><br><span class="code-term">/admin/reports/receivables-aging</span></td>
+        <td>Customer: Chaim Bowen<br>Due: ৳ 15,000<br>Days: <strong>2.0033220333565</strong></td>
+        <td>Sales Due = ৳ 15,000<br>Invoice Date: 06 Sep 2026<br>Current Date: 08 Sep 2026</td>
+        <td>Overdue balance matches, but Days Overdue displays raw floating point timestamp subtraction instead of integer formatting.</td>
+        <td><span class="badge badge-partial">PARTIAL</span></td>
+        <td><strong>BUG-121</strong></td>
+      </tr>
+      <tr>
+        <td style="text-align: center; font-weight: bold;">07</td>
+        <td><strong>Daily Summary (DTS)</strong><br><span class="code-term">/admin/reports/dts</span></td>
+        <td>Current Date: ৳ 0<br>06 Sep: Sales ৳ 125k, Purch ৳ 140k<br>07 Sep: Sales ৳ 500, Purch ৳ 13k</td>
+        <td>Purchases match Purchase Report exactly (৳ 140k & ৳ 13k). Sales reflect net after returns (৳ 125k & ৳ 500).</td>
+        <td>Defaults to ৳ 0 with no fallback when today has no sales. Replicates return deduction mismatch without separate refund card.</td>
+        <td><span class="badge badge-partial">PARTIAL</span></td>
+        <td><strong>BUG-102</strong></td>
+      </tr>
+      <tr>
+        <td style="text-align: center; font-weight: bold;">08</td>
+        <td><strong>Category-wise Sales</strong><br><span class="code-term">/admin/reports/category-wise</span></td>
+        <td>Category: "Shirt"<br>Sold: 8 items<br>Rev: ৳ 151,000<br>Profit: ৳ 30,600</td>
+        <td>6 x Mobile (৳ 150,000)<br>2 x Full Shirt (৳ 1,000)<br>Total: ৳ 151,000</td>
+        <td>Math is internally consistent with Detail Sales, but mobile devices are erroneously grouped under the "Shirt" category.</td>
+        <td><span class="badge badge-partial">PARTIAL</span></td>
+        <td>Catalog Defect</td>
+      </tr>
+      <tr>
+        <td style="text-align: center; font-weight: bold;">09</td>
+        <td><strong>Detail Sales</strong><br><span class="code-term">/admin/reports/detail-sales</span></td>
+        <td>6 Invoices (8 line items)<br>Grand Total: <strong>৳ 151,000</strong></td>
+        <td>Sales Invoices S001-S004 (06 Sep), S001-S002 (07 Sep)</td>
+        <td><strong>100% Reconciliation</strong>. Correct item prices, quantities, and line totals across all invoices.</td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>Baseline OK</td>
+      </tr>
+      <tr>
+        <td style="text-align: center; font-weight: bold;">10</td>
+        <td><strong>Purchase Report</strong><br><span class="code-term">/admin/reports/purchase</span></td>
+        <td>9 Bills (4 on 07 Sep, 3 on 06 Sep, 2 in Aug)<br>Total Purchases: <strong>৳ 183,000</strong><br>Paid: <strong>৳ 183,000</strong></td>
+        <td>Cash Flow "Supplier Payment" = <strong>৳ 183,000</strong><br>Purchases List Total = <strong>৳ 183,000</strong></td>
+        <td><strong>100% Reconciliation</strong>. Exactly matches Cash Flow supplier disbursements and Purchase Order register.</td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>Baseline OK</td>
+      </tr>
+      <tr>
+        <td style="text-align: center; font-weight: bold;">11</td>
+        <td><strong>Inventory Report</strong><br><span class="code-term">/admin/reports/inventory</span></td>
+        <td>Full Shirt: 259 in stock<br>Stock Value: <strong>৳ 51,800</strong><br>Mobile: 0 (Out of stock)</td>
+        <td>Initial + Purchases &minus; Returns &minus; Sales = 259 shirts.<br>Unit Cost = ৳ 200.00</td>
+        <td><strong>100% Reconciliation</strong>. 259 &times; ৳ 200 = ৳ 51,800.00. Valuation and inventory balances match perfectly.</td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>Baseline OK</td>
+      </tr>
+      <tr>
+        <td style="text-align: center; font-weight: bold;">12</td>
+        <td><strong>Customer Report</strong><br><span class="code-term">/admin/reports/customer</span></td>
+        <td>Chaim Bowen: Spent ৳ 25k, Due ৳ 15k<br>Rhiannon: Spent ৳ 500, Due ৳ 0</td>
+        <td>Sales Invoices S20260906002 and S20260907002</td>
+        <td><strong>100% Reconciliation</strong>. Outstanding receivables match Sales Report Due (৳ 15,000.00).</td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>Baseline OK</td>
+      </tr>
+      <tr>
+        <td style="text-align: center; font-weight: bold;">13</td>
+        <td><strong>Staff Report</strong><br><span class="code-term">/admin/reports/staff</span></td>
+        <td>EMP-0001: Present 2, Absent 2, Late 1, 27.0h worked</td>
+        <td>Attendance & Time Clock Register</td>
+        <td><strong>100% Reconciliation</strong>. Accurately logs operational hours and attendance statistics.</td>
+        <td><span class="badge badge-pass">PASS</span></td>
+        <td>Baseline OK</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- PAGE BREAK FOR PAGE 3 -->
+  <div class="page-break"></div>
+
+  <!-- PAGE 3: TRANSACTION STREAM RECONCILIATION -->
+  <h2>3. Deep-Dive: Reconciliation by Transaction Stream</h2>
+  <div class="section-desc">
+    Detailed double-entry validation tracking transactions from operational entry modules through Central Cash Flow into final financial statements.
+  </div>
+
+  <h3>3.1. Operating Expenses vs Cash Flow vs P&L (The ৳ 6,300 Leak)</h3>
+  <ul class="bullet-list">
+    <li><strong>Source Ledger (<span class="code-term">/admin/expenses</span>):</strong> 
+      Verified 3 Paid expense vouchers totaling <strong>৳ 6,300.00</strong> (<span class="code-term">EXP-2026-0001</span>: ৳ 5,000; <span class="code-term">EXP-2026-0005</span>: ৳ 300; <span class="code-term">EXP-2026-0007</span>: ৳ 1,000). Pending/Unapproved expenses (<span class="code-term">EXP-0002</span>, <span class="code-term">0003</span>, <span class="code-term">0004</span>, <span class="code-term">0006</span>) total ৳ 670.00.
+    </li>
+    <li><strong>Cash Flow Reconciliation:</strong> The Cash Flow statement accurately recognizes only the <strong>Paid</strong> expenses as <strong>৳ 6,300.00</strong> under Operating Cash Outflows.</li>
+    <li><strong>The Critical Defect:</strong> The <strong>Profit & Loss Report</strong> outputs <span class="code-term">Less: Operating Expenses (৳ 0)</span>.
+      Net Profit is reported at <strong>৳ 30,600.00</strong>. Correct Net Profit must be:
+      <div class="mono-box" style="margin: 4px 0;">
+        Correct Net Profit = Gross Profit (৳ 30,600.00) &minus; Operating Expenses (৳ 6,300.00) = <span class="green">৳ 24,300.00</span><br>
+        Reported Net Margin: <span class="red">20.26% (INFLATED)</span> &nbsp;|&nbsp; Actual Net Margin: <span class="green">16.09%</span>
+      </div>
+    </li>
+  </ul>
+
+  <h3>3.2. Fixed Assets & Purchases vs Cash Flow (100% Parity)</h3>
+  <ul class="bullet-list">
+    <li><strong>Asset Register (<span class="code-term">/admin/assets</span>):</strong> Contains <span class="code-term">AST-0001</span> (Office printer, ৳ 3,000) and <span class="code-term">AST-0002</span> (Tissue dispenser, ৳ 300). Total capitalized assets = <strong>৳ 3,300.00</strong>.</li>
+    <li><strong>Cash Flow Reconciliation:</strong> Cash Outflow line item <strong>"Asset Purchase" = ৳ 3,300.00</strong> (100% Match).</li>
+    <li><strong>Maintenance:</strong> Cash Outflow line item <strong>"Asset Maintenance" = ৳ 1,000.00</strong> (100% Match with maintenance log).</li>
+  </ul>
+
+  <h3>3.3. Loans & Liabilities vs Cash Flow (100% Parity)</h3>
+  <ul class="bullet-list">
+    <li><strong>Commercial Term Loans (<span class="code-term">/admin/loans</span>):</strong> Lender Camille Walls &mdash; Principal ৳ 20,000.00; Repaid ৳ 1,666.67.<br>
+      Cash Flow: <span class="code-term">Loan Received (Lender)</span> = <strong>৳ 20,000.00</strong> (Inflow); <span class="code-term">Loan Repayment (Lender)</span> = <strong>৳ 1,666.67</strong> (Outflow). (100% Match)
+    </li>
+    <li><strong>Personal Loans (<span class="code-term">/admin/personal-loans</span>):</strong>
+      Orla Calderon: Taken ৳ 10,000, Repaid ৳ 4,000. Maya Rhodes: Given ৳ 6,000, Recovered ৳ 3,000.<br>
+      Cash Flow: <span class="code-term">Loan Taken (Person)</span> = <strong>৳ 10,000.00</strong>; <span class="code-term">Loan Paid Back</span> = <strong>৳ 4,000.00</strong>; <span class="code-term">Loan Given</span> = <strong>৳ 6,000.00</strong>; <span class="code-term">Loan Recovered</span> = <strong>৳ 3,000.00</strong>. (100% Match)
+    </li>
+  </ul>
+
+  <h3>3.4. Purchases & Supplier Payments (Paradox Explained)</h3>
+  <ul class="bullet-list">
+    <li><strong>Purchases (<span class="code-term">/admin/purchases</span>):</strong> 9 POs totaling <strong>৳ 183,000.00</strong> (all Paid). Matches Cash Flow "Supplier Payment" = <strong>৳ 183,000.00</strong>.</li>
+    <li><strong>Advances:</strong> Supplier Advance = <strong>৳ 10,100.00</strong>; Advance Refund = <strong>৳ 3,000.00</strong>.</li>
+    <li><strong>The Paradox in <span class="code-term">/admin/reports/supplier-payments</span>:</strong>
+      Shows <span class="code-term">All-Time Paid: ৳ 178,100.00</span> while <span class="code-term">Period Paid: ৳ 193,100.00</span>.<br>
+      <strong>Root Cause:</strong> The period query aggregates purchase payments (৳ 183k) + advances (৳ 10.1k) = ৳ 193,100, but the all-time query joins purchases directly, omitting advance vouchers. In double-entry accounting, Period Paid cannot exceed Lifetime Paid.
+    </li>
+  </ul>
+
+  <h3>3.5. Sales & Customer Dues (The Return Deduction Mismatch)</h3>
+  <ul class="bullet-list">
+    <li><strong>Gross Invoiced Sales:</strong> 6 invoices across 06 Sep and 07 Sep totaling <strong>৳ 151,000.00</strong>.</li>
+    <li><strong>Customer Returns:</strong> <span class="code-term">SR-2026-0001</span> (৳ 25,000) and <span class="code-term">SR-2026-0002</span> (৳ 500) = <strong>৳ 25,500.00</strong>.</li>
+    <li><strong>Sales Report Mismatch:</strong> In <span class="code-term">/admin/reports/sales</span>, the column header states <strong>Total Sales = ৳ 125,500</strong> while Collected = <strong>৳ 136,000</strong> and Due = <strong>৳ 15,000</strong>.
+      Because ৳ 136k + ৳ 15k = ৳ 151k, calling ৳ 125.5k "Total Sales" creates an accounting contradiction. The column must be renamed "Net Sales", or an explicit "Returns" column added.
+    </li>
+  </ul>
+
+  <!-- PAGE BREAK FOR PAGE 4 -->
+  <div class="page-break"></div>
+
+  <!-- PAGE 4: COMMITTED & PUSHED DELIVERABLES -->
+  <h2>4. Updates Committed & Pushed to Remote Repository</h2>
+  <div class="section-desc">
+    All audit deliverables, standalone forensic defect files, updated RTM, and test automation fixes have been permanently committed to GitHub:
+  </div>
+
+  <div class="mono-box">
+    <span class="accent">GIT REPOSITORY STATUS:</span><br>
+    <strong>Remote URL:</strong> https://github.com/naimuropu-cell/bizpos-qa-audit-framework.git<br>
+    <strong>Active Branch:</strong> main &nbsp;|&nbsp; <strong>Latest Commit:</strong> <span class="green">791d956</span> &nbsp;|&nbsp; <strong>Status:</strong> Up to date with origin/main
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 32%;">Committed File Path</th>
+        <th style="width: 14%;">Type / Scope</th>
+        <th style="width: 54%;">Audit Significance & Remediation Guidance for Dev Team</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>04-bug-reports/ALL_DEFECTS_LOG.md</strong></td>
+        <td><span class="badge" style="background:#e0f2fe;color:#0369a1;border:1px solid #7dd3fc;">CATALOG</span></td>
+        <td>Upgraded from 99 to <strong>118 audited defects</strong> (91 Fixed, 6 Need Revisions - QA, 18 Not Fixed, 3 Invalid). Full reference catalog for sprint planning.</td>
+      </tr>
+      <tr>
+        <td><strong>Bug-114_Profit_Loss_Zero_Expense.md</strong></td>
+        <td><span class="badge badge-crit">DEFECT SPEC</span></td>
+        <td>Forensic proof and remediation patch for the P&L ৳ 0 expense leak. Includes exact SQL fix binding <span class="code-term">total_expenses</span> to Paid expenses.</td>
+      </tr>
+      <tr>
+        <td><strong>Bug-109_Supplier_Payments_Paradox.md</strong></td>
+        <td><span class="badge badge-crit">DEFECT SPEC</span></td>
+        <td>Detailed explanation of the Period Paid (৳ 193.1k) vs All-Time Paid (৳ 178.1k) calculation paradox with unified SQL query.</td>
+      </tr>
+      <tr>
+        <td><strong>Bug-111_Cash_Movement_Deficit.md</strong></td>
+        <td><span class="badge badge-crit">DEFECT SPEC</span></td>
+        <td>Step-by-step fix to eliminate the false -৳ 18,600 deficit by including capital, loan, and return inflows in the Cash Movement controller.</td>
+      </tr>
+      <tr>
+        <td><strong>Bug-118_Sales_Report_Paradox.md</strong></td>
+        <td><span class="badge badge-fail">DEFECT SPEC</span></td>
+        <td>Recommends layout change replacing confusing "Total Sales" with explicit "Gross Sales", "Returns", and "Net Sales" columns.</td>
+      </tr>
+      <tr>
+        <td><strong>03-traceability-matrix/RTM_BizPOS.md</strong></td>
+        <td><span class="badge" style="background:#e0f2fe;color:#0369a1;border:1px solid #7dd3fc;">RTM</span></td>
+        <td>Added requirements <span class="code-term">REQ-REP-01</span> to <span class="code-term">REQ-REP-05</span> mapping all reporting business rules directly to test cases and defects.</td>
+      </tr>
+      <tr>
+        <td><strong>playwright-tests/pages/ & fixtures/</strong></td>
+        <td><span class="badge badge-pass">AUTOMATION</span></td>
+        <td>Updated Page Object Models with verified live production DOM selectors (<span class="code-term">#loginEmail</span>, <span class="code-term">#loginPassword</span>, <span class="code-term">#loginBtn</span>) and <span class="code-term">/admin/money/cashflow</span>.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="footer-note">
+    <span>BizPOS / YesSME ERP &mdash; Quality Assurance & Financial Systems Audit Framework</span>
+    <span>CONFIDENTIAL &mdash; PREPARED FOR ENGINEERING LEADERSHIP</span>
+  </div>
+
+</body>
+</html>
