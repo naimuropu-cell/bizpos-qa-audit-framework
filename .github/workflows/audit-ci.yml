@@ -1,0 +1,81 @@
+name: BizPOS Financial QA & Playwright CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  # -------------------------------------------------------------------
+  # Job 1: Zero-Variance Financial Parity Gatekeeper
+  # -------------------------------------------------------------------
+  financial-reconciliation-gate:
+    name: Financial Parity Audit Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Execute Reconciliation Audit Assertion
+        run: |
+          python scripts/reconciliation_audit.py --verbose
+
+  # -------------------------------------------------------------------
+  # Job 2: Playwright E2E & Defect Regression Test Suite
+  # -------------------------------------------------------------------
+  playwright-e2e-suite:
+    name: Playwright E2E & Ledger Audit Suite
+    needs: financial-reconciliation-gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: playwright-tests/package.json
+
+      - name: Install NPM Dependencies
+        working-directory: ./playwright-tests
+        run: |
+          npm ci || npm install
+
+      - name: Install Playwright Browsers & OS Dependencies
+        working-directory: ./playwright-tests
+        run: |
+          npx playwright install --with-deps chromium
+
+      - name: Validate TypeScript Compilation
+        working-directory: ./playwright-tests
+        run: |
+          npx tsc --noEmit
+
+      - name: Run Playwright Financial Audit Tests
+        working-directory: ./playwright-tests
+        env:
+          BASE_URL: ${{ secrets.BASE_URL || 'https://sme.yesbangladesh.net' }}
+          ERP_ADMIN_USER: ${{ secrets.ERP_ADMIN_USER || 'auditor.qa@bizpos.local' }}
+          ERP_ADMIN_PASSWORD: ${{ secrets.ERP_ADMIN_PASSWORD || 'AuditParity@2026' }}
+        run: |
+          npm run test:parity
+
+      - name: Upload Playwright Execution Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-audit-report
+          path: playwright-tests/playwright-report/
+          retention-days: 14
