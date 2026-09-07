@@ -10,7 +10,10 @@
     "test:ui": "playwright test --ui",
     "test:report": "playwright show-report",
     "test:parity": "playwright test tests/financial_parity.spec.ts",
-    "test:defects": "playwright test tests/bug96_journal_sync.spec.ts tests/bug76_rollback_safety.spec.ts"
+    "test:reports": "playwright test tests/reports_audit.spec.ts",
+    "test:audit": "playwright test tests/financial_parity.spec.ts tests/reports_audit.spec.ts",
+    "test:defects": "playwright test tests/bug96_journal_sync.spec.ts tests/bug76_rollback_safety.spec.ts",
+    "test:all": "playwright test"
   },
   "keywords": [
     "playwright",
@@ -18,9 +21,10 @@
     "erp",
     "financial-audit",
     "bizpos",
-    "qa"
+    "qa",
+    "qa-lead"
   ],
-  "author": "Senior QA & Financial Systems Auditor",
+  "author": "QA Lead & Financial Systems Architect",
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.42.1",
